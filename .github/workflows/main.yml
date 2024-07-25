@@ -1,0 +1,23 @@
+name: Build and Run
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    name: build
+    steps:
+      - uses: actions/checkout@v2
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 8.0.x
+      - run: |
+          cd tshirts
+          bash ../.github/workflows/expectfail.sh dotnet restore dotnet run
+      - run: |
+          cd misaligned
+          bash ../.github/workflows/expectfail.sh dotnet restore dotnet run
+      - run: |
+          cd alerter
+          bash ../.github/workflows/expectfail.sh dotnet restore dotnet run
